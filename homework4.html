@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Cart - Job Passcard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <style>
+    :root {
+      --primary-color: #2dcc70;
+      --text-dark: #333333;
+      --text-light: #828282;
+      --background-color: #f8f9fa;
+      --border-color: #e0e0e0;
+      --white: #ffffff;
+      --docs-gradient: linear-gradient(135deg, #a0c3ff 0%, #6b9bff 100%);
+      --slides-gradient: linear-gradient(135deg, #ffd18b 0%, #ffa84a 100%);
+    }
+
+    body {
+      font-family: "Kanit", sans-serif;
+      background-color: var(--background-color);
+      margin: 0;
+      color: var(--text-dark);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    /* --- Header --- */
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: var(--white);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo h1 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .icon-link {
+      position: relative;
+    }
+
+    .cart-icon .cart-notification {
+      position: absolute;
+      top: -5px;
+      right: -8px;
+      background-color: #eb5757;
+      color: var(--white);
+      font-size: 10px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-login {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .btn-signup {
+      text-decoration: none;
+      color: var(--text-dark);
+      border: 1.5px solid var(--border-color);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    /* --- Main Content --- */
+    .container > h2 {
+      font-size: 28px;
+      margin-bottom: 25px;
+    }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+    }
+
+    /* --- Cart Items --- */
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .delete-icon {
+      margin-right: 20px;
+      cursor: pointer;
+    }
+
+    .item-card {
+      width: 200px;
+      height: 120px;
+      border-radius: 12px;
+      padding: 15px;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+      margin-right: 25px;
+    }
+
+    .docs-card {
+      background: var(--docs-gradient);
+    }
+    .slides-card {
+      background: var(--slides-gradient);
+    }
+
+    .item-icon {
+      background: rgba(255, 255, 255, 0.2);
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .item-icon img {
+      width: 24px;
+      height: auto;
+    }
+    .item-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 8px 0 4px;
+    }
+    .item-tag {
+      font-size: 12px;
+      background-color: rgba(0, 0, 0, 0.1);
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
+
+    .item-details {
+      flex-grow: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .level-selector {
+      position: relative;
+    }
+    .selected-level {
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .level-selector.open .arrow-up,
+    .level-selector:not(.open) .arrow-down {
+      display: block;
+    }
+
+    .level-selector.open .arrow-down,
+    .level-selector:not(.open) .arrow-up {
+      display: none;
+    }
+
+    .level-options {
+      display: none;
+      position: absolute;
+      top: 105%;
+      left: 0;
+      right: 0;
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      list-style: none;
+      padding: 5px 0;
+      margin: 0;
+      z-index: 10;
+    }
+    .level-selector.open .level-options {
+      display: block;
+    }
+    .level-options li {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .level-options li.active {
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .level-options li:hover {
+      background-color: #f2f2f2;
+    }
+    .checkmark {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .level-progress {
+      display: flex;
+      gap: 8px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      background-color: #e0e0e0;
+      border-radius: 50%;
+    }
+    .dot.active {
+      background-color: var(--primary-color);
+    }
+
+    .item-price {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: right;
+      grid-column: 2 / 3; /* Position in the second column */
+      margin: 0;
+    }
+
+    /* --- Order Info --- */
+    .order-info {
+      background-color: var(--white);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      align-self: flex-start; /* Stick to top */
+    }
+
+    .order-info h3 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    .subtotal,
+    .total-payment {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .promo-code {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding-left: 10px;
+      margin-bottom: 20px;
+    }
+
+    .promo-code input {
+      border: none;
+      outline: none;
+      flex-grow: 1;
+      padding: 12px 10px;
+      font-family: "Kanit", sans-serif;
+    }
+
+    .btn-apply {
+      border: none;
+      background: none;
+      color: var(--primary-color);
+      font-weight: bold;
+      cursor: pointer;
+      padding: 12px 15px;
+      font-size: 14px;
+    }
+
+    .total-payment {
+      font-weight: bold;
+      font-size: 18px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .total-price {
+      font-size: 22px;
+      color: var(--primary-color);
+    }
+
+    .btn-checkout {
+      width: 100%;
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+  <body>
+    <header class="main-header">
+      <div class="logo">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+            stroke="#28A745"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M7.75 12L10.58 14.83L16.25 9.17"
+            stroke="#28A745"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <h1>Job Passcard</h1>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="#">ABOUT US</a></li>
+          <li><a href="#">PASSCARD</a></li>
+          <li><a href="#">PROFILE</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="#" class="icon-link search-icon">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+              stroke="#292D32"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M22 22L20 20"
+              stroke="#292D32"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+        <a href="#" class="icon-link cart-icon">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2 2H3.74001C4.82001 2 5.62001 2.93 5.58001 4L4.99 14.5C4.94 15.63 5.79001 16.5 6.92001 16.5H18.02C19.09 16.5 19.93 15.69 19.99 14.63L21.01 4.63C21.07 3.62 20.26 2.76 19.24 2.76H7"
+              stroke="#292D32"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span class="cart-notification">1</span>
+        </a>
+        <a href="#" class="btn-login">LOGIN</a>
+        <a href="#" class="btn-signup">SIGN UP</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <h2>My Cart</h2>
+      <div class="cart-layout">
+        <div class="cart-items">
+          <div class="cart-item">
+            <div class="delete-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19.3248 9.46826C19.3248 9.46826 18.7818 16.2033 18.4668 19.0403C18.3168 20.3953 17.4798 21.1893 16.1088 21.2143C13.4998 21.2613 10.8878 21.2643 8.27979 21.2093C6.96079 21.1823 6.13779 20.3783 5.99079 19.0473C5.67379 16.1853 5.13379 9.46826 5.13379 9.46826"
+                  stroke="#BDBDBD"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M20.708 6.23975H3.75"
+                  stroke="#BDBDBD"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M17.4406 6.23973C16.6556 6.23973 15.9796 5.68473 15.8256 4.91573L15.5826 3.69973C15.4326 3.13873 14.9246 2.75073 14.3456 2.75073H10.1126C9.53358 2.75073 9.02558 3.13873 8.87558 3.69973L8.63258 4.91573C8.47858 5.68473 7.80258 6.23973 7.01758 6.23973"
+                  stroke="#BDBDBD"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="item-card docs-card">
+              <div class="item-icon">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Google_Docs_logo_%282014-2020%29.svg/1481px-Google_Docs_logo_%282014-2020%29.svg.png"
+                  alt="Google Docs Icon"
+                />
+              </div>
+              <p class="item-title">Google Docs</p>
+              <span class="item-tag">Used for business</span>
+            </div>
+            <div class="item-details">
+              <div class="level">
+                <div class="selected-level">
+                  <span>LV 1-3</span>
+                  <svg
+                    class="arrow-up"
+                    width="12"
+                    height="8"
+                    viewBox="0 0 12 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1 7L6 2L11 7"
+                      stroke="#333"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+                <ul class="level-options">
+                  <li>LV 1-3</li>
+                  <li class="active">
+                    LV 2-3 <span class="checkmark">&#10003;</span>
+                  </li>
+                  <li>LV 3-3</li>
+                </ul>
+              </div>
+              <div class="level-progress">
+                <span class="dot active"></span>
+                <span class="dot active"></span>
+                <span class="dot"></span>
+              </div>
+              <p class="item-price">THB 150</p>
+            </div>
+          </div>
+
+          <div class="cart-item">
+            <div class="delete-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19.3248 9.46826C19.3248 9.46826 18.7818 16.2033 18.4668 19.0403C18.3168 20.3953 17.4798 21.1893 16.1088 21.2143C13.4998 21.2613 10.8878 21.2643 8.27979 21.2093C6.96079 21.1823 6.13779 20.3783 5.99079 19.0473C5.67379 16.1853 5.13379 9.46826 5.13379 9.46826"
+                  stroke="#BDBDBD"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M20.708 6.23975H3.75"
+                  stroke="#BDBDBD"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M17.4406 6.23973C16.6556 6.23973 15.9796 5.68473 15.8256 4.91573L15.5826 3.69973C15.4326 3.13873 14.9246 2.75073 14.3456 2.75073H10.1126C9.53358 2.75073 9.02558 3.13873 8.87558 3.69973L8.63258 4.91573C8.47858 5.68473 7.80258 6.23973 7.01758 6.23973"
+                  stroke="#BDBDBD"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="item-card slides-card">
+              <div class="item-icon">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Google_Slides_logo_%282014-2020%29.svg/1645px-Google_Slides_logo_%282014-2020%29.svg.png"
+                  alt="Google Slides Icon"
+                />
+              </div>
+              <p class="item-title">Google Slides</p>
+              <span class="item-tag">Used for business</span>
+            </div>
+            <div class="item-details">
+              <div class="level-selector">
+                <div class="selected-level">
+                  <span>LV 3/4</span>
+                  <svg
+                    class="arrow-down"
+                    width="12"
+                    height="8"
+                    viewBox="0 0 12 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1 1L6 6L11 1"
+                      stroke="#333"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div class="level-progress">
+                <span class="dot active"></span>
+                <span class="dot active"></span>
+                <span class="dot active"></span>
+                <span class="dot"></span>
+              </div>
+              <p class="item-price">THB 150</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="order-info">
+          <h3>Order Info</h3>
+          <div class="subtotal">
+            <span>Subtotal</span>
+            <span>THB 300</span>
+          </div>
+          <div class="promo-code">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14.43 22L22 14.43V9.57L14.43 2L9.57 2L2 9.57V14.43L9.57 22H14.43Z"
+                stroke="#BDBDBD"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M8.25 12C9.76878 12 11 10.7688 11 9.25C11 7.73122 9.76878 6.5 8.25 6.5C6.73122 6.5 5.5 7.73122 5.5 9.25C5.5 10.7688 6.73122 12 8.25 12Z"
+                stroke="#BDBDBD"
+                stroke-width="1.5"
+              />
+            </svg>
+            <input type="text" placeholder="Promotion code" />
+            <button class="btn-apply">APPLY</button>
+          </div>
+          <div class="total-payment">
+            <span>Total payment</span>
+            <span class="total-price">THB 300</span>
+          </div>
+          <button class="btn-checkout">LOG IN TO CHECKOUT</button>
+        </aside>
+      </div>
+    </main>
+  </body>
+</html>
